@@ -4,7 +4,8 @@ namespace Sinister;
 
 use Sinister\Environment as Environment;
 
-class Sinister {
+class Sinister 
+{
     
     /** Instance of the framework
      *
@@ -27,15 +28,19 @@ class Sinister {
     /**
      * Sinister private constructor
      */
-    private function __construct(){
+    private function __construct()
+    {
+        header('Content-Type: text/plain; charset=utf-8');
         $this->events = new EventManager;
+        Exception::registerErrorHandler();
     }
     
     /** get the instance of the Sinister framework
      *
      * @return Sinister\Sinister 
      */
-    public static function getInstance(){
+    public static function getInstance()
+    {
         if (!self::$instance) self::$instance = new self();
         return self::$instance;
     }
@@ -44,19 +49,19 @@ class Sinister {
      *
      * @param Sinister\Environment $env 
      */
-    public function setEnvironment(Environment $env){
+    public function setEnvironment(Environment $env)
+    {
         $this->environment = $env;       
     }
     
-    /** Render the framework output
+    /** Execute the framework
      *
      * @return void 
      */
-    public function render(){
-        ob_start();
-        echo "renderizando";
-        $contents = ob_get_clean();
-        echo $contents;
+    public function execute()
+    {
+        $dispatcher = new Dispatcher($this->environment);
+        return $dispatcher->dispatch($this->environment);
     }
     
 }
