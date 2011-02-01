@@ -2,4 +2,4 @@
 
 <p>hi there</p>
 
-<p>try: <a href="/test/caferrari">Teste</a></p>
+<p>try: <a href="/user">Teste</a></p>

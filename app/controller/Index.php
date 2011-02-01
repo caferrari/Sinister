@@ -1,6 +1,6 @@
 <?php
 
-class Index 
+class Index extends \Sinister\Controller
 {
     
     public function get(){
