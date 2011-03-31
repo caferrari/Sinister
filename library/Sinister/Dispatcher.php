@@ -4,20 +4,17 @@ namespace Sinister;
 
 class Dispatcher {
 
-    public function __construct($env) {
-        
-        $parsed             = $this->parseUri($env->uri);
+    public function __construct($env) 
+    {
+        $parsed             = $this->parseUri($env);
         $env->pars          = $parsed->pars;
         $env->controller    = $parsed->controller;
         $env->view          = $parsed->view;
     }
 
-    public function setDefaultRoute($route) {
-        
-    }
-
-    public function parseUri($uri) {
-        $uri = trim($uri, '/');
+    public function parseUri($env) 
+    {
+        $uri = trim($env->uri, '/');
 
         $parts = explode('/', $uri);
 
@@ -25,26 +22,45 @@ class Dispatcher {
         $viewPath = array();
         $pars = array();
 
+        $last_is = 'class';
         foreach ($parts as $k => $part) {
             if (0 === $k % 2) {
                 $controllerPath[] = $this->camelize($part);
                 $viewPath[] = $part;
+                $last_is = 'class';
             } else {
                 $pars[] = $part;
+                $last_is = 'parameter';
             }
         }
-
+        
+        if ($pars && $env->method == 'get' && $pars[count($pars)-1] == 'new'){
+            $env->method = 'getNew';
+            $last_is = 'class';
+            $viewPath[] = 'new';
+            array_pop($pars);
+        }
+        
+        if ($env->method == 'get'){
+            if ($last_is == 'class') {
+                $env->method = 'getAll';
+                $viewPath[] = 'index';
+            }else{
+                $viewPath[] = 'get';
+            }
+        }
+        
         $controller = '\\' . implode($controllerPath, '\\');
         $view       = implode($viewPath, '/');
         
         if ($controller == '\\')    $controller = '\\Index';
-        if ($view == '')            $view = 'index';
+        if ($view == '')            $view = 'get';
         
-        return (object)array(
-            'controller'    => $controller,
-            'view'          => $view,
-            'pars'          => $pars
-        );
+        $env->controller    = $controller;
+        $env->view          = $view . '.php';
+        $env->pars          = $pars;
+
+        return $env;
     }
     
     public function dispatch($environment)
@@ -58,7 +74,8 @@ class Dispatcher {
      * @param $str String
      * @return String
      */
-    public function camelize($str='') {
+    public function camelize($str='') 
+    {
         return str_replace(' ', '', ucwords(str_replace(array('_', '-'), ' ', $str)));
     }
 
@@ -67,7 +84,8 @@ class Dispatcher {
      * @param $str String
      * @return String
      */
-    public function uncamelize($str='') {
+    public function uncamelize($str='') 
+    {
         return preg_replace('@^_+|_+$@', '', strtolower(preg_replace("/([A-Z])/", "_$1", $str)));
     }
 

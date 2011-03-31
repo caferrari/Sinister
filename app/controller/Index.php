@@ -3,7 +3,7 @@
 class Index extends \Sinister\Controller
 {
     
-    public function get(){
+    public function getAll(){
         
     }
     

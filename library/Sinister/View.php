@@ -7,10 +7,12 @@ class View
     
     public function render(Environment $env, $vars)
     {
+        $path = $env->root . 'app/view/' . $env->view;
+        
+        if (!file_exists($path)) 
+            throw new Exception\ViewNotFoundException(sprintf('View %s not found', $env->view));
+        
         header('Content-Type: text/html; charset=utf-8');
-        
-        $path = $env->root . 'app/view/' . $env->view . '.php';
-        
         ob_start();
         extract($vars);
         if (file_exists($path)) include($path);

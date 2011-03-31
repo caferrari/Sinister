@@ -6,23 +6,34 @@ class AppContext {
 
     static $vars = array();
     
-    public function execute(Environment $env) {
+    public function execute(Environment $env) 
+    {
         $this->execFrontController($env);
         $this->execController($env);
         return $this->render($env);
     }
 
-    public function execFrontController(Environment $env) {
+    public function execFrontController(Environment $env) 
+    {
         if (class_exists('\FrontController')) {
             $fc = new FrontController;
         }
     }
 
-    public function execController(Environment $env) {
+    public function execController(Environment $env) 
+    {
+        
+        if (!class_exists($env->controller)){
+            throw new Exception\ControllerNotFoundException(sprintf('Controller %s not found', $env->controller));
+        }
+        
         $controller = new $env->controller();
         $controller->environment = $env;
+        
         if (method_exists($controller, $env->method)) {
             call_user_func_array(array($controller, $env->method), $env->pars);
+        }else{
+            throw new Exception\NotImplementedException(sprintf('Action %s is not defined in the controller %s', $env->method, $env->controller));
         }
     }
     

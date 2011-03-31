@@ -14,7 +14,6 @@ $scl->register('../app/controller/');
 use Sinister\Sinister;
 use Sinister\Environment;
 
-$s = Sinister::getInstance();
-$s->setEnvironment(new Environment($_SERVER));
-
-echo $s->execute();
+$s = new Sinister;
+$environment = new Environment($_SERVER);
+echo $s->execute($environment);
