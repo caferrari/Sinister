@@ -8,13 +8,16 @@ abstract class Route
     protected static $routes = array();
     
     public function execute($uri, $method){
-        $route = $this->findRoute($uri);
-        if ($route) $uri = $route;
-        return $this->parseUri($uri, $method);
+        return $this->parseUri($this->findRoute($uri), $method);
     }
     
     public function findRoute($uri){
-        return false;
+        
+        foreach (self::$routes as $r){
+        
+        }
+        
+        return $uri;
     }
     
     public function parseUri($uri, $method) 
