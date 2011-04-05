@@ -34,6 +34,7 @@ class Environment
      */
     public function __construct($server)
     {
+        $this->router      = false;
         $this->virtualRoot = str_replace('library/bootstrap.php', '', $server['PHP_SELF']);
         $this->root        = str_replace('library/bootstrap.php', '', $server['SCRIPT_FILENAME']);
         $this->uri         = preg_replace('@\?.*$@', '', str_replace($this->virtualRoot, '/', $server['REQUEST_URI']));

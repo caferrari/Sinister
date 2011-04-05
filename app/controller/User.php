@@ -7,12 +7,16 @@ class User extends \Sinister\Controller
         $this->name = $name;
     }
     
-    public function getAll(){
+    public function getIndex(){
         
     }
     
     public function getNew(){
         die('opa novo');
+    }
+    
+    public function getEdit(){
+        die('opa editando');
     }
     
 }

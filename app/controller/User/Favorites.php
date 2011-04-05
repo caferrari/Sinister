@@ -8,7 +8,7 @@ class Favorites extends \Sinister\Controller
        
     }
     
-    public function getAll($name) {
+    public function getIndex($name) {
         if ('' == $name) $name = 'undefined';
         $this->name = $name;
     }
