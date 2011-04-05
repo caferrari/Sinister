@@ -2,7 +2,8 @@
 
 namespace Sinister;
 
-class EventManager{
+class EventManager
+{
     
     private $events = array();
     

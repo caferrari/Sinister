@@ -4,7 +4,7 @@ namespace Sinister\Exception;
 
 use Sinister\Exception;
 
-class ControllerNotFoundException extends Exception 
+class InvalidUriException extends Exception 
 {
     public function __construct($message)
     {

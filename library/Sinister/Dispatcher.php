@@ -4,9 +4,8 @@ namespace Sinister;
 
 class Dispatcher {
 
-    public function __construct($env) 
+    public function __construct(Environment $env) 
     {
-        
         if ($env->router){
             //$route = new Route\{$env->router}();
         }else

@@ -2,19 +2,23 @@
 
 namespace Sinister;
 
+use Sinister\Exception\InvalidUriException;
+
 abstract class Route
 {
     
     protected static $routes = array();
     
-    public function execute($uri, $method){
+    public function execute($uri, $method)
+    {
         return $this->parseUri($this->findRoute($uri), $method);
     }
     
-    public function findRoute($uri){
+    public function findRoute($uri)
+    {
         
         foreach (self::$routes as $r){
-        
+            // match ?
         }
         
         return $uri;
@@ -24,39 +28,32 @@ abstract class Route
     {
         $parts = explode('/', trim($uri, '/'));
 
-        if ($parts && in_array($parts[count($parts) - 1], array('new', 'edit'))){
+        if ($parts && in_array(end($parts), array('new', 'edit'), true))
             $method = 'get' . ucfirst(array_pop($parts));
-        }
         
-        $controllerPath = array();
-        $viewPath = array();
-        $pars = array();
+        $controllerPath = $viewPath = $pars = array();
 
-        $last_is = 'class';
-        foreach ($parts as $k => $part) {
-            if (0 === $k % 2) {
-                $controllerPath[] = $this->camelize($part);
-                $viewPath[] = $part;
-                $last_is = 'controller';
-            } else {
+        foreach ($parts as $k => $part) 
+            if (0 === $k % 2)
+                $controllerPath[] = $this->camelize($viewPath[] = $part);
+            else
                 $pars[] = $part;
-                $last_is = 'parameter';
-            }
-        }
         
         if (in_array($method, array('getNew', 'getEdit'))){
             $last_is = ($method == 'getNew') ? 'controller' : 'parameter';
             $viewPath[] = strtolower(str_replace('get', '', $method));
         }
         
-        if ($method == 'get'){
-            if ($last_is == 'controller') {
+        if ($method == 'get')
+            if (0 === $k % 2) {
                 $method = 'getIndex';
                 $viewPath[] = 'index';
-            }else{
+            }else
                 $viewPath[] = 'get';
-            }
-        }
+        
+        
+        if ('getEdit' == $method && 0 === $k % 2) 
+            throw new InvalidUriException('you need to specify the resource to edit');
         
         $controller = '\\' . implode($controllerPath, '\\');
         $view       = implode($viewPath, '/');

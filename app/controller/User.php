@@ -15,8 +15,8 @@ class User extends \Sinister\Controller
         die('opa novo');
     }
     
-    public function getEdit(){
-        die('opa editando');
+    public function getEdit($user){
+        die("editando $user");
     }
     
 }

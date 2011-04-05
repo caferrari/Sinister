@@ -43,7 +43,8 @@ class AppContext {
         return $view->render($env, self::$vars);
     }
 
-    public function __set($prop, $val) {
+    public function __set($prop, $val) 
+    {
         if (substr($prop, 0, 1) == '_') {
             $method = '_set' . ucfirst(substr($prop, 1));
             if (method_exists($this, $method)) {
@@ -54,13 +55,15 @@ class AppContext {
         }
     }
     
-    public function __get($par){
+    public function __get($par)
+    {
         if (isset(self::$vars[$par]))
             return self::$vars[$par];
         return $this->$par;
     }
 
-    private function _setView($v) {
+    private function _setView($v)
+    {
         $this->environment->view = $v;
     }
 

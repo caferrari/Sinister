@@ -25,7 +25,8 @@ class View
         return $contents;
     }
     
-    public function fixLinks(Environment $env, $html){
+    public function fixLinks(Environment $env, $html)
+    {
         return preg_replace('@href="/@', 'href="' . $env->virtualRoot, $html);
     }
     

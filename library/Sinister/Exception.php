@@ -4,7 +4,6 @@ namespace Sinister;
 
 class Exception extends \Exception
 {
-    
     private $httpCode = 500;
     
     public function __construct($message, $httpCode, $code = 0)
