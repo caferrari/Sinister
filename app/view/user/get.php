@@ -2,4 +2,4 @@
 
 <p>Profile details here</p>
 
-<p><a href="/user/{name}/favorites/">Look my favorites</a></p>
+<p><a href="/user/{name}/favorites">Look my favorites</a></p>

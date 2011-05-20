@@ -4,12 +4,16 @@ namespace Sinister;
 
 class Exception extends \Exception
 {
-    private $httpCode = 500;
+    public $httpCode = 500;
     
     public function __construct($message, $httpCode, $code = 0)
     {
         parent::__construct($message, $code);
         $this->httpCode = $httpCode;
+    }
+    
+    public function __toString(){
+    	return print_r($this, true);
     }
     
     public static function registerErrorHandler()

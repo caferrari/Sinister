@@ -14,6 +14,12 @@ $scl->register('../app/controller/');
 use Sinister\Sinister;
 use Sinister\Environment;
 
-$s = new Sinister;
-$environment = new Environment($_SERVER);
-echo $s->execute($environment);
+if (file_exists('../app/bootstrap.php')){
+	include ('../app/bootstrap.php');
+}else{
+	$s = new Sinister;
+	$environment = new Environment($_SERVER);
+	echo $s->execute($environment);
+}
+
+

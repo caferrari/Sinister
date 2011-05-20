@@ -32,8 +32,9 @@ class Environment
      *
      * @param Array $server 
      */
-    public function __construct($server)
+    public function __construct($server, $environment = 'development')
     {
+    	$this->environment = $environment;
         $this->router      = false;
         $this->virtualRoot = str_replace('library/bootstrap.php', '', $server['PHP_SELF']);
         $this->root        = str_replace('library/bootstrap.php', '', $server['SCRIPT_FILENAME']);

@@ -7,6 +7,4 @@ use \Sinister\Route;
 class Basic extends Route
 {
     
-    
-    
 }

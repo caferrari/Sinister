@@ -26,6 +26,13 @@ abstract class Route
     
     public function parseUri($uri, $method) 
     {
+    
+    	if (preg_match('@\.([a-z]+$)@', $uri, $mat)){
+    		$contentType = $mat[1];
+    		$uri = str_replace($mat[0], '', $uri);
+    	}else
+    		$contentType = 'html';
+    
         $parts = explode('/', trim($uri, '/'));
 
         if ($parts && in_array(end($parts), array('new', 'edit'), true))
@@ -64,6 +71,7 @@ abstract class Route
         return array(
             'controller' => $controller,
             'view'       => $view . '.php',
+            'contentType'=> $contentType,
             'pars'       => $pars,
             'method'     => $method,
             'routed'     => false

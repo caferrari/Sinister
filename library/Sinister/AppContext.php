@@ -39,8 +39,17 @@ class AppContext {
     
     public function render(Environment $env)
     {
-        $view = new View;
-        return $view->render($env, self::$vars);
+    	switch ($env->contentType){
+    		case 'json':
+    			unset(self::$vars['environment']);
+				return json_encode(self::$vars);    		
+    		case 'html':
+    			$view = new View;
+        		return $view->render($env, self::$vars);
+        	default:
+        		throw new Exception\InvalidContentRequestFormatException('The requested content format is invalid!');
+    	}
+        
     }
 
     public function __set($prop, $val) 
